@@ -1,0 +1,22 @@
+{
+  "name": "SETH 1 AI PRO",
+  "short_name": "SETH AI",
+  "description": "塞特 1 遊戲紀錄與統計分析工具",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090d15",
+  "theme_color": "#090d15",
+  "icons": [
+    {
+      "src": "icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

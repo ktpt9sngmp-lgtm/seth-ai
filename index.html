@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#090d15">
+<title>SETH 1 AI PRO</title>
+<style>
+:root{
+ --bg:#080c13;--card:#121927;--card2:#182132;--line:#2a3547;--txt:#f6f8fc;--muted:#9aa8bc;
+ --gold:#e2b85b;--good:#4ed47a;--warn:#f6bc4d;--bad:#ff6b72;--blue:#68a7ff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:radial-gradient(circle at top,#172033 0,#090d15 42%,#070a10 100%);color:var(--txt);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif}
+.app{max-width:980px;margin:auto;padding:14px 12px 70px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+h1{margin:5px 0 2px;font-size:25px;letter-spacing:.5px}
+.kicker{font-size:11px;color:var(--gold);font-weight:800;letter-spacing:1.5px}
+.muted{color:var(--muted);font-size:12px;line-height:1.5}
+.pill{padding:7px 10px;border-radius:999px;background:#171f2d;border:1px solid var(--line);font-size:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.card{background:rgba(18,25,39,.96);border:1px solid var(--line);border-radius:15px;padding:12px}
+.metric .lab{font-size:11px;color:var(--muted)}
+.metric .val{font-size:21px;font-weight:900;margin-top:3px}
+.section{margin-top:10px}
+.row{display:grid;grid-template-columns:1.2fr .9fr .9fr .9fr;gap:8px}
+.row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+input,select,button{
+ width:100%;border-radius:11px;border:1px solid var(--line);background:#0c121d;color:var(--txt);
+ padding:10px 11px;font-size:15px;outline:none
+}
+button{font-weight:800;cursor:pointer}
+.gold{border:0;background:linear-gradient(180deg,#e7c36f,#bf8c32);color:#171006}
+.dark{background:#1b2535}
+.danger{background:#351d25;border-color:#63303d}
+.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.blue{color:var(--blue)}
+.quick{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:8px}
+.quick button{padding:10px 6px;font-size:13px}
+.actions{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-top:8px}
+.bigsignal{font-size:20px;font-weight:950;margin:4px 0}
+.bar{height:8px;background:#0a0f17;border-radius:999px;overflow:hidden;margin-top:7px}
+.bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--good),var(--warn),var(--bad))}
+.forecast{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.forecast .box{background:#0d141f;border:1px solid var(--line);border-radius:12px;padding:10px}
+.forecast .box b{font-size:19px;display:block;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:8px 5px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.hint{border-left:3px solid var(--gold);padding-left:10px}
+.roomlist{display:grid;gap:7px;margin-top:8px}
+.roomitem{display:grid;grid-template-columns:1.1fr .7fr .7fr .7fr;gap:8px;align-items:center;background:#0d141f;border:1px solid var(--line);border-radius:12px;padding:9px}
+.roomscore{font-weight:900}
+dialog{border:1px solid var(--line);border-radius:16px;background:#101725;color:var(--txt);width:min(92vw,500px)}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+.codebox{width:100%;height:110px;background:#080d14;color:#b9c6da;border:1px solid var(--line);border-radius:10px;padding:8px;font-size:11px}
+@media(max-width:720px){
+ .grid4,.forecast{grid-template-columns:repeat(2,1fr)}
+ .grid3{grid-template-columns:repeat(2,1fr)}
+ .row{grid-template-columns:1fr 1fr}
+ .row2{grid-template-columns:1fr 1fr}
+ .tools{grid-template-columns:1fr 1fr}
+ .roomitem{grid-template-columns:1.2fr .8fr .8fr}
+ .roomitem .hideM{display:none}
+}
+</style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="SETH AI">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div>
+      <div class="kicker">SETH 1 • AI SESSION PRO</div>
+      <h1>塞特 1 數據助手</h1>
+      <div class="muted">房間紀錄・回分率・免遊頻率・統計預估・止盈止損・浮動小窗</div>
+    </div>
+    <div class="pill">官方 RTP 96.89%</div>
+  </div>
+
+  <div class="grid4">
+    <div class="card metric"><div class="lab">本房得分率 / RTP</div><div id="rtp" class="val">—</div></div>
+    <div class="card metric"><div class="lab">目前盈虧</div><div id="profit" class="val">0</div></div>
+    <div class="card metric"><div class="lab">房間狀態分</div><div id="roomScore" class="val">50</div></div>
+    <div class="card metric"><div class="lab">距上次免遊</div><div id="sinceFG" class="val">—</div></div>
+  </div>
+
+  <div class="card section">
+    <div class="row">
+      <div>
+        <label>房號 / 自訂名稱</label>
+        <input id="room" placeholder="例如 1688" value="房間A">
+      </div>
+      <div>
+        <label>每轉投注</label>
+        <input id="bet" type="number" min="1" value="100">
+      </div>
+      <div>
+        <label>本轉派彩</label>
+        <input id="pay" type="number" min="0" value="0">
+      </div>
+      <div>
+        <label>Scatter</label>
+        <input id="scatter" type="number" min="0" max="6" value="0">
+      </div>
+    </div>
+
+    <div class="quick">
+      <button class="dark" onclick="quickPay(0)">0 分</button>
+      <button class="dark" onclick="quickPay(1)">1×</button>
+      <button class="dark" onclick="quickPay(2)">2×</button>
+      <button class="dark" onclick="quickPay(5)">5×</button>
+      <button class="dark" onclick="markFG()">FG</button>
+    </div>
+
+    <div class="actions">
+      <button class="gold" onclick="addSpin()">＋ 記錄這一轉</button>
+      <button class="dark" onclick="undo()">復原</button>
+      <button class="danger" onclick="clearRoom()">清本房</button>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+      <div>
+        <div class="muted">短期訊號（描述目前樣本，不是下一轉預言）</div>
+        <div id="signal" class="bigsignal">尚無資料</div>
+      </div>
+      <div style="min-width:125px">
+        <label>預估轉數</label>
+        <input id="forecastN" type="number" min="1" max="1000" value="20" oninput="render()">
+      </div>
+    </div>
+    <div class="bar"><div id="riskBar"></div></div>
+  </div>
+
+  <div class="card section">
+    <b>AI 統計估計</b>
+    <div class="muted" style="margin:4px 0 8px">採官方 RTP + 你的房間樣本做收縮估計；樣本越少越靠近官方長期值。</div>
+    <div class="forecast">
+      <div class="box"><span class="muted">下一批預估回分</span><b id="expPayout">—</b><span id="expPayoutSub" class="muted"></span></div>
+      <div class="box"><span class="muted">預估淨值</span><b id="expNet">—</b><span class="muted">期望值 ≠ 保證結果</span></div>
+      <div class="box"><span class="muted">免遊平均間隔</span><b id="fgGap">—</b><span class="muted">不是倒數</span></div>
+      <div class="box"><span class="muted">下一批出現 ≥1 FG</span><b id="fgChance">—</b><span class="muted">僅樣本頻率模型</span></div>
+    </div>
+  </div>
+
+  <div class="grid3 section">
+    <div class="card metric"><div class="lab">本房轉數</div><div id="spins" class="val">0</div></div>
+    <div class="card metric"><div class="lab">中獎轉比例</div><div id="hitRate" class="val">—</div></div>
+    <div class="card metric"><div class="lab">FG 次數</div><div id="fgCount" class="val">0</div></div>
+    <div class="card metric"><div class="lab">大獎轉 ≥5×</div><div id="bigHit" class="val">—</div></div>
+    <div class="card metric"><div class="lab">目前連續虧損</div><div id="lossStreak" class="val">0</div></div>
+    <div class="card metric"><div class="lab">最近 20 轉 RTP</div><div id="rtp20" class="val">—</div></div>
+  </div>
+
+  <div class="card section">
+    <b>資金紀律</b>
+    <div class="row2" style="margin-top:8px">
+      <div><label>停損（負數金額）</label><input id="stopLoss" type="number" value="-3000" oninput="saveSettings();render()"></div>
+      <div><label>止盈</label><input id="takeProfit" type="number" value="3000" oninput="saveSettings();render()"></div>
+      <div><label>單次最多轉數</label><input id="maxSpins" type="number" value="200" oninput="saveSettings();render()"></div>
+    </div>
+    <div id="discipline" class="muted" style="margin-top:7px">尚未觸發限制。</div>
+  </div>
+
+  <div class="card section">
+    <b>小視窗 / 快捷模式</b>
+    <div class="tools" style="margin-top:8px">
+      <button class="gold" onclick="openMini()">電腦置頂小窗</button>
+      <button class="dark" onclick="openPopup()">一般迷你窗</button>
+      <button class="dark" onclick="showBookmarklet()">Safari 頁內浮窗</button>
+      <button class="dark" onclick="exportCSV()">匯出 CSV</button>
+    </div>
+    <div class="muted" style="margin-top:7px">
+      電腦 Chrome 支援真正可互動的置頂 Document PiP。iPhone 若塞特是在 Safari 網頁內，可使用「頁內浮窗」；若塞特是獨立 App，iOS 不允許一般網頁做可互動系統懸浮窗。
+    </div>
+  </div>
+
+  <div class="card section">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <b>房間比較</b>
+      <button class="dark" style="width:auto;padding:7px 10px" onclick="switchRoomPrompt()">切換 / 新增</button>
+    </div>
+    <div id="roomList" class="roomlist"></div>
+  </div>
+
+  <div class="card section">
+    <b>最近 30 轉</b>
+    <div style="overflow:auto;margin-top:6px">
+      <table>
+        <thead><tr><th>#</th><th>投注</th><th>派彩</th><th>淨值</th><th>SC</th><th>FG</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card section hint">
+    <b>這版怎麼解讀</b>
+    <div class="muted">
+      「房間狀態分」只把你已輸入的本房 RTP、中獎轉比例、最近回撤、連敗與樣本量整理成 0–100 分，方便比較紀錄；
+      它不代表房間 RNG 被破解，也不代表高分房下一轉比較容易中。官方賽特 1 為高波動遊戲，短期結果可能和長期 RTP 差很多。
+    </div>
+  </div>
+</div>
+
+<dialog id="bmDialog">
+  <h3 style="margin-top:0">Safari 頁內浮窗</h3>
+  <div class="muted">把下方整段設成 Safari 書籤的網址（URL）。之後在「塞特網頁」裡點那個書籤，就會直接蓋一個可拖曳的小面板在遊戲頁上。</div>
+  <textarea id="bmCode" class="codebox" readonly></textarea>
+  <div class="tools" style="margin-top:8px">
+    <button class="gold" onclick="copyBM()">複製腳本</button>
+    <button class="dark" onclick="document.getElementById('bmDialog').close()">關閉</button>
+  </div>
+</dialog>
+
+<script>
+const OFFICIAL_RTP=96.89;
+const STORE='seth1_ai_pro_v3';
+const SETTINGS='seth1_ai_settings_v3';
+let state=JSON.parse(localStorage.getItem(STORE)||'{"rooms":{},"current":"房間A"}');
+let settings=JSON.parse(localStorage.getItem(SETTINGS)||'{"stopLoss":-3000,"takeProfit":3000,"maxSpins":200}');
+let pipWin=null;
+
+function el(id){return document.getElementById(id)}
+function num(v){return Number(v)||0}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+function fmt(v){return Math.round(v).toLocaleString('zh-TW')}
+function pct(v){return isFinite(v)?v.toFixed(2)+'%':'—'}
+
+function ensureRoom(name){
+ name=(name||'房間A').trim()||'房間A';
+ if(!state.rooms[name]) state.rooms[name]=[];
+ state.current=name; el('room').value=name; save();
+ return state.rooms[name];
+}
+function cur(){return ensureRoom(el('room').value)}
+function save(){localStorage.setItem(STORE,JSON.stringify(state))}
+function saveSettings(){
+ settings={stopLoss:num(el('stopLoss').value),takeProfit:num(el('takeProfit').value),maxSpins:num(el('maxSpins').value)};
+ localStorage.setItem(SETTINGS,JSON.stringify(settings));
+}
+function quickPay(mult){el('pay').value=Math.round(num(el('bet').value)*mult)}
+function markFG(){el('scatter').value=4}
+
+function addSpin(){
+ const r=cur();
+ const bet=num(el('bet').value),pay=num(el('pay').value),sc=num(el('scatter').value);
+ if(bet<=0){alert('投注需大於 0');return}
+ r.push({bet,pay,scatter:sc,fg:sc>=4?1:0,t:Date.now()});
+ el('pay').value=0;el('scatter').value=0;save();render();
+}
+function undo(){const r=cur();r.pop();save();render()}
+function clearRoom(){if(confirm('確定清空目前房間紀錄？')){state.rooms[state.current]=[];save();render()}}
+function switchRoomPrompt(){
+ const n=prompt('輸入房號 / 名稱',state.current||'房間A');
+ if(n){ensureRoom(n);render()}
+}
+el('room').addEventListener('change',()=>{ensureRoom(el('room').value);render()});
+
+function stats(arr){
+ const n=arr.length;
+ const tb=arr.reduce((a,x)=>a+x.bet,0);
+ const tp=arr.reduce((a,x)=>a+x.pay,0);
+ const profit=tp-tb;
+ const rtp=tb?tp/tb*100:NaN;
+ const hits=arr.filter(x=>x.pay>0).length;
+ const big=arr.filter(x=>x.pay>=x.bet*5).length;
+ const fgs=arr.filter(x=>x.fg).length;
+ let streak=0,since=0;
+ for(let i=n-1;i>=0;i--){if(arr[i].pay<arr[i].bet)streak++;else break}
+ for(let i=n-1;i>=0;i--){if(arr[i].fg)break;since++}
+ const recent=arr.slice(-20);
+ const rb=recent.reduce((a,x)=>a+x.bet,0),rp=recent.reduce((a,x)=>a+x.pay,0);
+ const rtp20=rb?rp/rb*100:NaN;
+ const hitRate=n?hits/n*100:NaN,bigRate=n?big/n*100:NaN;
+ const reliability=n/(n+40);
+ const rtpComponent=isFinite(rtp)?clamp((rtp-OFFICIAL_RTP)*.65,-24,24):0;
+ const hitComponent=isFinite(hitRate)?clamp((hitRate-30)*.25,-8,8):0;
+ const streakPenalty=clamp(streak*1.8,0,16);
+ const raw=50+rtpComponent+hitComponent-streakPenalty;
+ const score=Math.round(50*(1-reliability)+clamp(raw,0,100)*reliability);
+ return {n,tb,tp,profit,rtp,hits,big,fgs,streak,since,rtp20,hitRate,bigRate,score};
+}
+
+function render(){
+ const arr=cur(),s=stats(arr);
+ el('rtp').textContent=pct(s.rtp);
+ el('profit').textContent=(s.profit>0?'+':'')+fmt(s.profit);
+ el('profit').className='val '+(s.profit>0?'good':s.profit<0?'bad':'');
+ el('roomScore').textContent=s.score;
+ el('roomScore').className='val '+(s.score>=65?'good':s.score<40?'bad':'warn');
+ el('sinceFG').textContent=s.fgs?s.since+' 轉':(s.n?'未出':'—');
+ el('spins').textContent=s.n;
+ el('hitRate').textContent=pct(s.hitRate);
+ el('fgCount').textContent=s.fgs;
+ el('bigHit').textContent=pct(s.bigRate);
+ el('lossStreak').textContent=s.streak;
+ el('rtp20').textContent=pct(s.rtp20);
+
+ const N=clamp(num(el('forecastN').value)||20,1,1000);
+ const bet=num(el('bet').value)||100;
+ const sampleRtp=isFinite(s.rtp)?s.rtp:OFFICIAL_RTP;
+ const w=s.n/(s.n+100);
+ const blended=OFFICIAL_RTP*(1-w)+sampleRtp*w;
+ const payout=bet*N*blended/100;
+ const net=payout-bet*N;
+ el('expPayout').textContent=fmt(payout);
+ el('expPayoutSub').textContent=`${N} 轉・估計 RTP ${blended.toFixed(2)}%`;
+ el('expNet').textContent=(net>0?'+':'')+fmt(net);
+ el('expNet').className=(net>=0?'good':'bad');
+
+ if(s.fgs>0){
+   const p=s.fgs/s.n;
+   const gap=s.n/s.fgs;
+   const chance=(1-Math.pow(1-p,N))*100;
+   el('fgGap').textContent='約 '+gap.toFixed(0)+' 轉';
+   el('fgChance').textContent=chance.toFixed(1)+'%';
+ }else{
+   el('fgGap').textContent=s.n>=30?'本房尚未出現':'樣本不足';
+   el('fgChance').textContent='—';
+ }
+
+ let risk=0;
+ if(s.n>=5){
+   risk+=clamp(s.streak*5,0,30);
+   if(s.profit<0 && s.tb) risk+=clamp((-s.profit/s.tb)*80,0,35);
+   if(isFinite(s.rtp20)&&s.rtp20<70) risk+=20;
+   if(s.n>=settings.maxSpins) risk+=20;
+ }
+ risk=clamp(risk,0,100);el('riskBar').style.width=risk+'%';
+ let sig='尚無足夠資料', cls='';
+ if(s.n>=5){
+   if(settings.stopLoss<0 && s.profit<=settings.stopLoss){sig='已達停損｜建議停止';cls='bad'}
+   else if(settings.takeProfit>0 && s.profit>=settings.takeProfit){sig='已達止盈｜建議收手';cls='good'}
+   else if(s.n>=settings.maxSpins){sig='已達設定轉數上限';cls='bad'}
+   else if(risk>=65){sig='回撤偏高｜不建議追注';cls='bad'}
+   else if(risk>=35){sig='波動偏弱｜維持或降低投注';cls='warn'}
+   else if(isFinite(s.rtp20)&&s.rtp20>120){sig='近期回分偏高';cls='good'}
+   else {sig='目前波動一般';cls=''}
+ }
+ el('signal').textContent=sig;el('signal').className='bigsignal '+cls;
+
+ let d=[];
+ if(settings.stopLoss<0 && s.profit<=settings.stopLoss)d.push('已觸發停損');
+ if(settings.takeProfit>0 && s.profit>=settings.takeProfit)d.push('已觸發止盈');
+ if(settings.maxSpins>0 && s.n>=settings.maxSpins)d.push('已達最多轉數');
+ el('discipline').textContent=d.length?d.join('・'):'尚未觸發限制。';
+
+ const tb=el('tbody');tb.innerHTML='';
+ arr.slice(-30).reverse().forEach((x,i)=>{
+  const net=x.pay-x.bet,idx=arr.length-i;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td>${idx}</td><td>${fmt(x.bet)}</td><td>${fmt(x.pay)}</td><td class="${net>0?'good':net<0?'bad':''}">${net>0?'+':''}${fmt(net)}</td><td>${x.scatter}</td><td>${x.fg?'✓':'—'}</td>`;
+  tb.appendChild(tr)
+ });
+ renderRooms();
+ updateMini();
+}
+function renderRooms(){
+ const wrap=el('roomList');wrap.innerHTML='';
+ const rows=Object.entries(state.rooms).map(([name,a])=>[name,stats(a)]).sort((a,b)=>b[1].score-a[1].score);
+ if(!rows.length){wrap.innerHTML='<div class="muted">尚無房間資料</div>';return}
+ rows.forEach(([name,s])=>{
+  const d=document.createElement('div');d.className='roomitem';
+  d.innerHTML=`<div><b>${name}</b><div class="muted">${s.n} 轉・FG ${s.fgs}</div></div>
+  <div><span class="muted">狀態分</span><div class="roomscore ${s.score>=65?'good':s.score<40?'bad':'warn'}">${s.score}</div></div>
+  <div><span class="muted">RTP</span><div>${pct(s.rtp)}</div></div>
+  <div class="hideM"><span class="muted">盈虧</span><div class="${s.profit>=0?'good':'bad'}">${s.profit>0?'+':''}${fmt(s.profit)}</div></div>`;
+  d.onclick=()=>{state.current=name;el('room').value=name;save();render()};
+  wrap.appendChild(d)
+ });
+}
+
+async function openMini(){
+ if(!('documentPictureInPicture' in window)){
+   alert('這台裝置/瀏覽器不支援可互動 Document PiP。電腦請用最新版 Chrome；iPhone 請用「Safari 頁內浮窗」。');
+   return;
+ }
+ try{
+  pipWin=await window.documentPictureInPicture.requestWindow({width:310,height:430});
+  const doc=pipWin.document;
+  doc.head.innerHTML=`<meta charset="utf-8"><style>
+   body{margin:0;padding:10px;background:#090d15;color:#f6f8fc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC",sans-serif}
+   .c{background:#131b29;border:1px solid #2a3547;border-radius:13px;padding:10px;margin-bottom:8px}
+   .top{font-size:12px;color:#9aa8bc}.v{font-size:24px;font-weight:900}.g{color:#4ed47a}.b{color:#ff6b72}
+   input,button{width:100%;box-sizing:border-box;background:#0b111b;color:white;border:1px solid #2a3547;border-radius:10px;padding:10px;font-size:14px}
+   .q{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px}.q button{padding:9px 4px}
+   .add{background:#d6a94f;color:#151006;font-weight:900;border:0;margin-top:6px}
+   .grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  </style>`;
+  doc.body.innerHTML=`<div class="c"><div class="top" id="mroom"></div><div class="grid">
+   <div><div class="top">RTP</div><div class="v" id="mrtp"></div></div>
+   <div><div class="top">盈虧</div><div class="v" id="mprofit"></div></div>
+  </div><div class="top" style="margin-top:5px" id="mextra"></div></div>
+  <div class="c"><input id="mpay" type="number" value="0" placeholder="本轉派彩">
+  <div class="q"><button data-x="0">0</button><button data-x="1">1×</button><button data-x="5">5×</button></div>
+  <div class="q"><button id="mfg">FG</button><button id="mundo">復原</button><button id="mclose">關閉</button></div>
+  <button class="add" id="madd">＋記錄這轉</button></div>`;
+  doc.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>doc.getElementById('mpay').value=Math.round(num(el('bet').value)*num(b.dataset.x)));
+  doc.getElementById('madd').onclick=()=>{el('pay').value=doc.getElementById('mpay').value;el('scatter').value=0;addSpin();doc.getElementById('mpay').value=0};
+  doc.getElementById('mfg').onclick=()=>{el('pay').value=doc.getElementById('mpay').value;el('scatter').value=4;addSpin();doc.getElementById('mpay').value=0};
+  doc.getElementById('mundo').onclick=()=>undo();
+  doc.getElementById('mclose').onclick=()=>pipWin.close();
+  updateMini();
+ }catch(e){alert('無法開啟小窗：'+e.message)}
+}
+function updateMini(){
+ if(!pipWin||pipWin.closed)return;
+ const doc=pipWin.document,s=stats(cur());
+ const set=(id,v)=>{const x=doc.getElementById(id);if(x)x.textContent=v};
+ set('mroom',state.current+'・'+s.n+' 轉・狀態分 '+s.score);
+ set('mrtp',pct(s.rtp));set('mprofit',(s.profit>0?'+':'')+fmt(s.profit));
+ set('mextra','FG '+s.fgs+' 次・距上次 '+(s.fgs?s.since+' 轉':'—')+'・連虧 '+s.streak);
+ const p=doc.getElementById('mprofit');if(p)p.className='v '+(s.profit>=0?'g':'b');
+}
+function openPopup(){
+ const w=window.open(location.href,'sethMini','width=360,height=620');
+ if(!w)alert('瀏覽器阻擋了彈出視窗。')
+}
+
+function bookmarkletCode(){
+ return `javascript:(()=>{if(window.__seth1Overlay){window.__seth1Overlay.remove();window.__seth1Overlay=null;return}let D=[],B=100,f=0;const x=document.createElement('div');window.__seth1Overlay=x;x.style='position:fixed;z-index:2147483647;right:8px;top:80px;width:188px;background:#0b111bcc;color:#fff;border:1px solid #d6a94f;border-radius:14px;padding:9px;font:12px -apple-system,BlinkMacSystemFont,sans-serif;backdrop-filter:blur(8px);box-shadow:0 8px 25px #0008';x.innerHTML='<div id=sdrag style="font-weight:900;color:#e1b75b;cursor:move">SETH 1 MINI ✦</div><div id=sst style="margin:5px 0;color:#aab6c8">0轉｜RTP —｜FG 0</div><input id=sbet type=number value=100 style="width:49%;box-sizing:border-box;background:#111a28;color:#fff;border:1px solid #39465a;border-radius:7px;padding:6px"><input id=spay type=number value=0 style="width:49%;box-sizing:border-box;background:#111a28;color:#fff;border:1px solid #39465a;border-radius:7px;padding:6px"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:5px"><button data-v=0>0</button><button data-v=1>1x</button><button data-v=5>5x</button><button id=sfg>FG</button></div><button id=sadd style="width:100%;margin-top:5px;background:#d6a94f;border:0;border-radius:8px;padding:7px;font-weight:900">＋記錄</button><div id=sai style="margin-top:5px;color:#ddd">狀態分 50｜免遊間隔 —</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:4px"><button id=sundo>復原</button><button id=sclose>關閉</button></div>';x.querySelectorAll('button').forEach(b=>{b.style.cssText+=';background:#1a2434;color:white;border:1px solid #344157;border-radius:7px;padding:6px;font-weight:700'});x.querySelector('#sadd').style.background='#d6a94f';x.querySelector('#sadd').style.color='#171006';const q=s=>x.querySelector(s),r=()=>{let n=D.length,tb=D.reduce((a,z)=>a+z.b,0),tp=D.reduce((a,z)=>a+z.p,0),fg=D.filter(z=>z.f).length,rt=tb?tp/tb*100:0,pr=tp-tb,st=0;for(let i=n-1;i>=0&&D[i].p<D[i].b;i--)st++;let rel=n/(n+40),sc=Math.round(50*(1-rel)+Math.max(0,Math.min(100,50+Math.max(-24,Math.min(24,(rt-96.89)*.65))-Math.min(16,st*1.8)))*rel);q('#sst').textContent=n+'轉｜RTP '+(tb?rt.toFixed(1)+'%':'—')+'｜FG '+fg+'｜'+(pr>=0?'+':'')+Math.round(pr);q('#sai').textContent='狀態分 '+sc+'｜免遊間隔 '+(fg?Math.round(n/fg)+'轉':'—')};x.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>q('#spay').value=Math.round((+q('#sbet').value||100)*(+b.dataset.v)));q('#sfg').onclick=()=>f=1;q('#sadd').onclick=()=>{D.push({b:+q('#sbet').value||100,p:+q('#spay').value||0,f});q('#spay').value=0;f=0;r()};q('#sundo').onclick=()=>{D.pop();r()};q('#sclose').onclick=()=>{x.remove();window.__seth1Overlay=null};document.body.appendChild(x);let ox=0,oy=0,down=0;q('#sdrag').ontouchstart=e=>{down=1;ox=e.touches[0].clientX-x.offsetLeft;oy=e.touches[0].clientY-x.offsetTop};document.ontouchmove=e=>{if(down){x.style.left=e.touches[0].clientX-ox+'px';x.style.top=e.touches[0].clientY-oy+'px';x.style.right='auto'}};document.ontouchend=()=>down=0;r()})()`;
+}
+function showBookmarklet(){el('bmCode').value=bookmarkletCode();el('bmDialog').showModal()}
+async function copyBM(){
+ try{await navigator.clipboard.writeText(el('bmCode').value);alert('已複製。把它貼到 Safari 書籤的網址欄位即可。')}
+ catch(e){el('bmCode').select();document.execCommand('copy');alert('已複製')}
+}
+
+function exportCSV(){
+ const rows=[['room','spin','bet','payout','net','scatter','free_game','time']];
+ Object.entries(state.rooms).forEach(([room,a])=>a.forEach((x,i)=>rows.push([room,i+1,x.bet,x.pay,x.pay-x.bet,x.scatter,x.fg,new Date(x.t).toISOString()])));
+ const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='seth1_ai_rooms.csv';a.click();URL.revokeObjectURL(a.href)
+}
+
+el('stopLoss').value=settings.stopLoss;el('takeProfit').value=settings.takeProfit;el('maxSpins').value=settings.maxSpins;
+el('room').value=state.current||'房間A';ensureRoom(el('room').value);render();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+
+</body>
+</html>
