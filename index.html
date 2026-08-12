@@ -83,7 +83,7 @@ details summary{cursor:pointer;font-weight:800}
 <body>
 <div class="app">
   <div class="header">
-    <div><div class="kicker">SETH 1 • AI AUTO v2</div><h1>塞特 1 自動數據助手</h1>
+    <div><div class="kicker">SETH 1 • AI AUTO v2.1</div><h1>塞特 1 自動數據助手</h1>
       <div class="muted">手動紀錄＋截圖 OCR＋螢幕錄影匯入掃描</div></div>
     <div class="badge">官方 RTP 96.89%</div>
   </div>
@@ -150,11 +150,11 @@ details summary{cursor:pointer;font-weight:800}
     <div class="card autoHero">
       <div class="ocrStatus"><span id="ocrDot" class="dot"></span><b>iPhone 自動辨識</b></div>
       <div class="muted" style="margin-top:5px">
-        現在可用：① 選遊戲截圖自動讀取 ② 將 iPhone 螢幕錄影匯入後自動掃描。第一次辨識會下載 OCR 模型，需要網路。
+        現在可用：① 選遊戲截圖自動讀取 ② 匯入 iPhone 已錄好的螢幕錄影自動掃描。影片按鈕現在固定走「檔案」選擇，不會要求你開相機。第一次辨識會下載 OCR 模型，需要網路。
       </div>
       <div class="autoActions">
         <label class="filebtn gold">選擇遊戲截圖<input id="imageFiles" type="file" accept="image/*" multiple></label>
-        <label class="filebtn">選擇螢幕錄影<input id="videoFile" type="file" accept="video/*"></label>
+        <label class="filebtn">從「檔案」選螢幕錄影<input id="videoFile" type="file"></label>
       </div>
       <div id="ocrMessage" class="muted" style="margin-top:8px">尚未選擇檔案。</div>
       <div class="progress"><div id="ocrProgress"></div></div>
@@ -181,7 +181,7 @@ details summary{cursor:pointer;font-weight:800}
     <div class="card notice">
       <b>怎麼最省事</b>
       <div class="muted" style="margin-top:4px">
-        iPhone 控制中心 → 開始「螢幕錄影」→ 玩塞特 → 結束錄影 → 回到 SETH AI →「選擇螢幕錄影」。網站會從影片擷取畫面並嘗試讀取投注、贏分、點數、FG 與大獎。
+        iPhone 控制中心 → 開始「螢幕錄影」→ 玩塞特 → 結束錄影 → 到「照片」找到這支螢幕錄影 → 分享 →「儲存到檔案」→ 回 SETH AI →「從檔案選螢幕錄影」。網站會從影片擷取畫面並嘗試讀取投注、贏分、點數、FG 與大獎。
       </div>
     </div>
 
@@ -459,8 +459,18 @@ $('imageFiles').addEventListener('change',async e=>{
 
 $('videoFile').addEventListener('change',async e=>{
   const f=e.target.files?.[0];if(!f)return;
-  const v=$('videoPreview');v.src=URL.createObjectURL(f);$('videoCard').style.display='block';$('videoResults').innerHTML='';
-  setOCR('影片已載入，按「開始掃描」。',0,false);
+  const name=(f.name||'').toLowerCase();
+  const isVideo=(f.type||'').startsWith('video/') || /\.(mov|mp4|m4v|webm)$/i.test(name);
+  if(!isVideo){
+    alert('請選 iPhone 的螢幕錄影影片（MOV / MP4）。');
+    e.target.value='';
+    return;
+  }
+  const v=$('videoPreview');
+  v.src=URL.createObjectURL(f);
+  $('videoCard').style.display='block';
+  $('videoResults').innerHTML='';
+  setOCR('螢幕錄影已載入，按「開始掃描」。',0,false);
 });
 function seekVideo(v,t){return new Promise((resolve,reject)=>{const done=()=>{v.removeEventListener('seeked',done);resolve()};v.addEventListener('seeked',done);v.currentTime=Math.min(Math.max(0,t),Math.max(0,v.duration-.05));setTimeout(()=>resolve(),3500)})}
 async function videoFrameImage(v){

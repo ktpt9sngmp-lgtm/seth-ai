@@ -1,4 +1,4 @@
-const CACHE='seth-ai-auto-v2-20260812';
+const CACHE='seth-ai-auto-v2-1-20260812';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-512.png'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([
