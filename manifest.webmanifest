@@ -1,7 +1,7 @@
 {
-  "name": "SETH 1 AI PRO",
+  "name": "SETH AI AUTO",
   "short_name": "SETH AI",
-  "description": "塞特 1 遊戲紀錄與統計分析工具",
+  "description": "塞特 1 遊戲紀錄、截圖 OCR 與螢幕錄影自動分析",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
